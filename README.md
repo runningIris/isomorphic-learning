@@ -1,20 +1,40 @@
 # React Redux 同构直出
 
 
-嘿嘿嘿, 读完，终究还是了解了一些新知识。
+嘿嘿嘿, 终究还是学习了一些新知识。
 
 解了心中存在很久对疑惑
+
 
 本仓库存放我个人学习[mz026/universal-redux-template](https://github.com/mz026/universal-redux-template)的代码笔记
 
 配合Yang-Hsing Lin的[博客原文](http://mz026.logdown.com/posts/308147-hello-redux-2-3-server-rendering)学习
 
+笔记做得零零散散，给自己看。
+
+
+## 梳理思路
+
 客户端向服务端发送请求：
+
 根据请求地址的参数，匹配route
 
-并且返回目前的store来渲染页面
+取到相应的组件，去检查组件有没有fetchData(获取数据渲染页面的接口)这个方法
 
-渲染好的页面返回给客户端
+
+如果有，则在服务端发起请求，得到fetchData的数据，跟新reduxState
+
+根据reduxState来渲染页面
+
+把渲染好的页面和reduxState返回给客户端
+
+
+## 疑惑
+- server-side 和 client-side 的reduxState怎么同步？
+- client-side的reduxState具体有啥作用？
+
+下次看看复杂些的项目再来了解更多关于redux吧
+
 
 ## 顿然醒悟的点
 
@@ -44,8 +64,7 @@
 
 
 
-忽略了这段：去检查对应组件里是否有fetchData这个方法，如果有的话，传入{query, params, store, history}, 执行这个方法，再返回promise。 fetchData里store.dispatch(action)去改变store，这个store从头到尾都是在server-side
-执行完fetchData之后，把
+- 不小心忽略了以下这段代码：去检查对应组件里是否有fetchData这个方法，如果有的话，传入{query, params, store, history}, 执行这个方法，再返回promise。 fetchData里store.dispatch(action)去改变store
 
 ``` js
 getReduxPromise().then(()=> {
