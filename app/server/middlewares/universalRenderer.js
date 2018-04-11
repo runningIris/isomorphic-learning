@@ -50,5 +50,5 @@ export default (req, res, next) => {
       }
       unsubscribe(302, getCurrentUrl())
     });
-  })
+  });
 }
